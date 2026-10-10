@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Cloudy - The AWS Free Tier Advisor Agent
+
+Globals:
+  Function:
+    Timeout: 10
+    Runtime: nodejs20.x
+
+Resources:
+  CloudyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: app.handler
+      Events:
+        CloudyAPI:
+          Type: Api
+          Properties:
+            Path: /chat
+            Method: post
+
+Outputs:
+  CloudyApiUrl:
+    Description: "API Gateway endpoint URL for Prod stage for Cloudy"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/chat"
